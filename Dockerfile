@@ -2,7 +2,7 @@
 # https://github.com/hiroi-sora/Umi-OCR
 # https://github.com/hiroi-sora/Umi-OCR_runtime_linux
 
-FROM debian:11-slim
+FROM registry.cn-hangzhou.aliyuncs.com/chris_sync/debian:11-slim
 
 LABEL app="Umi-OCR-Paddle"
 LABEL maintainer="hiroi-sora"
@@ -10,6 +10,16 @@ LABEL version="2.1.4"
 LABEL description="OCR software, free and offline."
 LABEL license="MIT"
 LABEL org.opencontainers.image.source="https://github.com/hiroi-sora/Umi-OCR_runtime_linux"
+
+# 设置环境变量，避免交互式配置
+ENV DEBIAN_FRONTEND=noninteractive
+
+# 更换为清华大学的 Debian 镜像源
+RUN echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye main contrib non-free" > /etc/apt/sources.list && \
+    echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye-updates main contrib non-free" >> /etc/apt/sources.list && \
+    echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye-backports main contrib non-free" >> /etc/apt/sources.list && \
+    echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security main contrib non-free" >> /etc/apt/sources.list
+
 
 # 安装所需工具和QT依赖库
 RUN apt-get update && apt-get install -y \
